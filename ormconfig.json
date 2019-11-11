@@ -1,0 +1,16 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "root",
+  "password": "root",
+  "database": "exchange",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "migrations": ["dist/migrations/*.js"],
+  "synchronize": false,
+  "logging": true,
+  "uuidExtension": "uuid-ossp",
+  "cli": {
+    "migrationsDir": "migrations"
+  }
+}
