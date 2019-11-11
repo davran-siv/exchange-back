@@ -19,9 +19,6 @@ export class UserRepository {
 
   findOneById(id: string): Promise<UserEntity> {
     return this.entity.createQueryBuilder('user')
-               .leftJoinAndSelect('user.products', 'products')
-               .leftJoinAndSelect('user.favoriteProducts', 'favoriteProducts')
-               .select(['user', 'products.id', 'favoriteProducts.id'])
                .where('user.id = :id', { id })
                .getOne()
   }
@@ -32,16 +29,9 @@ export class UserRepository {
                .getOne()
   }
 
-  findOneByUsername(username: string): Promise<UserEntity> {
-    return this.entity.createQueryBuilder('users')
-               .where('users.emailAddress = :username', { username })
-               .getOne()
-  }
-
   findOneByEmailOrUsernameWithPassword(emailAddressOrUsername: string): Promise<UserEntity> {
     return this.entity.createQueryBuilder('users')
                .where('users.emailAddress = :emailAddressOrUsername', { emailAddressOrUsername })
-               .orWhere('users.username = :emailAddressOrUsername', { emailAddressOrUsername })
                .andWhere('users.isDeleted = false')
                .addSelect('users.password')
                .getOne()

@@ -1,8 +1,25 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  // await runMigration()
+  const app = await NestFactory.create(AppModule)
+  initSwagger(app)
+  app.useGlobalPipes(new ValidationPipe())
+  await app.listen(3000)
 }
-bootstrap();
+
+const initSwagger = (app) => {
+  const options = new DocumentBuilder()
+    .setTitle('Handmade API')
+    .setDescription('Handmade API documentation')
+    .setVersion('1.0')
+    // .addTag('cats')
+    .build()
+  const document = SwaggerModule.createDocument(app, options)
+  SwaggerModule.setup('api', app, document)
+}
+
+bootstrap()
