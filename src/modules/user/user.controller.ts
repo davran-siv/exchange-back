@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { CreateUserRequestDTO, UpdateUserRequestDTO, UserResponseDTO } from './user.interfaces'
 import { UserService } from './user.service'
 
@@ -10,7 +11,7 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(200)
-  // @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard())
   findOne(@Param('id') id): Promise<UserResponseDTO> {
     return this.service.findOneById(id)
   }
