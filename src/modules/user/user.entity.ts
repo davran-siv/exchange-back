@@ -20,12 +20,6 @@ export class UserEntity {
   @Column({ name: 'is_active', default: true })
   isActive: boolean
 
-  @Column({ name: 'created_at', type: 'time without time zone' })
-  createdAt: Date
-
-  @Column({ name: 'updated_at', type: 'time without time zone' })
-  updatedAt: Date
-
   @Column({ name: 'email_address', type: 'varchar' })
   emailAddress: string
 
@@ -40,5 +34,11 @@ export class UserEntity {
 
   @Column({ type: 'varchar' })
   photo: string
+
+  @Column({ name: 'created_at', type: 'time without time zone' })
+  createdAt: Date
+
+  @Column({ name: 'updated_at', type: 'time without time zone' })
+  updatedAt: Date
 
 }
