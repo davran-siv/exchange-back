@@ -2,12 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { EntityManager, Transaction, TransactionManager } from 'typeorm'
 import { HttpExceptionMessage } from '../../consts/http-exception-message'
 import { hashPassword } from '../../utils/password.util'
-import {
-  CreateUserRequestDTO,
-  UpdateUserRequestDTO,
-  UserResponseDTO,
-  UserResponseWithPasswordDto
-} from './user.interfaces'
+import { CreateUserRequestDTO, UpdateUserRequestDTO, UserResponseDTO, UserResponseWithPasswordDto } from './user.interfaces'
 import { UserRepository } from './user.repository'
 
 @Injectable()
@@ -37,9 +32,6 @@ export class UserService {
   async createOne(dto: CreateUserRequestDTO,
                   @TransactionManager() entityManager?: EntityManager): Promise<UserResponseDTO> {
     const { password, ...user } = dto
-    if (dto.password !== dto.passwordConfirmation) {
-      throw new ForbiddenException(HttpExceptionMessage.user.passwordsDoNotMatch)
-    }
     await this.throwExceptionIfEmailInUse(dto.emailAddress)
 
     const hashedPassword = await hashPassword(password)
@@ -55,13 +47,18 @@ export class UserService {
       await this.throwExceptionIfEmailInUse(dto.emailAddress)
     }
 
-    const newUser = await this.repository.createOrUpdateOne(dto)
-    return UserResponseDTO.of(newUser)
+    await this.repository.createOrUpdateOne(dto)
+    return this.findOneById(dto.id)
   }
 
-  async removeOne(id: string): Promise<void> {
+  async removeOne(id: string): Promise<boolean> {
     const user = { id, isDeleted: true }
-    await this.repository.createOrUpdateOne(user)
+    try {
+      await this.repository.createOrUpdateOne(user)
+      return true
+    } catch (e) {
+      return false
+    }
   }
 
   async findOneByEmailOrUsernameWithPassword(emailOrUsername: string): Promise<UserResponseWithPasswordDto | undefined> {

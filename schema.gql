@@ -3,11 +3,49 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type Query {
-  user(id: String!): UserGraphql!
+type AuthJwtTokes {
+  accessToken: String!
+  refreshToken: String!
 }
 
-type UserGraphql {
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  password: String!
+  photo: String
+}
+
+input LoginByCredentialsInput {
+  emailAddress: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(user: CreateUserInput!): User!
+  updateUser(user: UpdateUserInput!): User!
+  removeUser(id: String!): Boolean!
+}
+
+type Query {
+  user(id: String!): User!
+  loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
+  refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstName: String
+  lastName: String
+  emailAddress: String
+  photo: String
+}
+
+type User {
   id: ID!
   firstName: String!
   lastName: String!

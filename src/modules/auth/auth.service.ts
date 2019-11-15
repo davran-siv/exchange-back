@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as c from 'config'
 import { HttpExceptionMessage } from '../../consts/http-exception-message'
@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   async loginByCredentials(dto: LoginByCredentialsDto): Promise<AuthJwtTokesDto> {
-    const user = await this.userService.findOneByEmailOrUsernameWithPassword(dto.emailOrUsername)
+    const user = await this.userService.findOneByEmailOrUsernameWithPassword(dto.emailAddress)
     if (!user) {
       throw new UnauthorizedException(HttpExceptionMessage.auth.credentialsAreWrong)
     }

@@ -9,8 +9,6 @@ export class CreateUserRequestDTO {
   @ApiModelProperty()
   readonly password: string
   @ApiModelProperty()
-  readonly passwordConfirmation: string
-  @ApiModelProperty()
   readonly emailAddress: string
   @ApiModelProperty({ required: false })
   readonly photo?: string
