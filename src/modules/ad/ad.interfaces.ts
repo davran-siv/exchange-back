@@ -1,27 +1,39 @@
-import { ApiModelProperty } from '@nestjs/swagger'
 import { AdStatus, AdType, City, CurrencyType } from '../../consts'
 
 export class AdResponseDTO {
-  @ApiModelProperty()
   id: string
-  @ApiModelProperty()
   category: any
-  @ApiModelProperty()
   type: AdType
-  @ApiModelProperty()
   title: string
-  @ApiModelProperty()
   description: string
-  @ApiModelProperty()
   assessedValue: number
-  @ApiModelProperty()
   city: City
-  @ApiModelProperty()
   phoneNumber: string
-  @ApiModelProperty()
   currency: CurrencyType
-  @ApiModelProperty()
   status: AdStatus
-  @ApiModelProperty()
   interests: any
+}
+
+export interface AdCreateFirstStepDTO {
+  categoryId: string
+}
+
+export interface AdCreateSecondStepDTO {
+  id: string
+  type: AdType
+  title: string
+  description?: string
+  images?: string[]
+}
+
+export interface AdCreateThirdStepDTO {
+  id: string
+  assessedValue?: number
+  currency?: CurrencyType
+  city: City
+  phoneNumber?: string
+}
+
+export interface AdCreateForthStepDTO {
+  interestCategoryId: string[]
 }

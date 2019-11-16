@@ -29,9 +29,9 @@ export class UserRepository {
                .getOne()
   }
 
-  findOneByEmailOrUsernameWithPassword(emailAddressOrUsername: string): Promise<UserEntity> {
+  findOneByEmailWithPassword(emailAddress: string): Promise<UserEntity> {
     return this.entity.createQueryBuilder('users')
-               .where('users.emailAddress = :emailAddressOrUsername', { emailAddressOrUsername })
+               .where('users.emailAddress = :emailAddress', { emailAddress })
                .andWhere('users.isDeleted = false')
                .addSelect('users.password')
                .getOne()

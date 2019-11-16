@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   async loginByCredentials(dto: LoginByCredentialsDto): Promise<AuthJwtTokesDto> {
-    const user = await this.userService.findOneByEmailOrUsernameWithPassword(dto.emailAddress)
+    const user = await this.userService.findOneByEmailWithPassword(dto.emailAddress)
     if (!user) {
       throw new UnauthorizedException(HttpExceptionMessage.auth.credentialsAreWrong)
     }

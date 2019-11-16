@@ -3,9 +3,73 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Ad {
+  id: ID!
+  title: String!
+  description: String!
+  assessedValue: Float!
+  phoneNumber: String!
+  currency: CurrencyType!
+  type: AdType!
+  city: City!
+  status: AdStatus!
+  category: AdCategory!
+  interests: [AdCategory!]!
+}
+
+type AdCategory {
+  id: ID!
+  name: String!
+}
+
+input AdCreateFirstStepInput {
+  categoryId: String!
+}
+
+input AdCreateFourthStepInput {
+  interestCategoryId: [Int!]!
+}
+
+input AdCreateSecondStepInput {
+  id: ID!
+  type: AdType!
+  title: String!
+  description: String!
+  images: [Int!]!
+}
+
+input AdCreateThirdStepInput {
+  id: ID!
+  assessedValue: Float!
+  currency: CurrencyType!
+  city: City!
+  phoneNumber: String!
+}
+
+"""Ad statuses"""
+enum AdStatus {
+  approved
+  banned
+  underConsideration
+  deleted
+  closed
+  notFullFilled
+}
+
+"""Ad types"""
+enum AdType {
+  service
+  product
+}
+
 type AuthJwtTokes {
   accessToken: String!
   refreshToken: String!
+}
+
+"""All possible cities"""
+enum City {
+  bishkek
 }
 
 input CreateUserInput {
@@ -16,12 +80,22 @@ input CreateUserInput {
   photo: String
 }
 
+"""All possible currency"""
+enum CurrencyType {
+  dollar
+  som
+}
+
 input LoginByCredentialsInput {
   emailAddress: String!
   password: String!
 }
 
 type Mutation {
+  creatAdFirstStep(ad: AdCreateFirstStepInput!): Ad!
+  creatAdSecondStep(ad: AdCreateSecondStepInput!): Ad!
+  creatAdThirdStep(ad: AdCreateThirdStepInput!): Ad!
+  creatAdForthStep(ad: AdCreateFourthStepInput!): Ad!
   createUser(user: CreateUserInput!): User!
   updateUser(user: UpdateUserInput!): User!
   removeUser(id: String!): Boolean!

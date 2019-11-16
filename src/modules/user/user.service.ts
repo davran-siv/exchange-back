@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { EntityManager, Transaction, TransactionManager } from 'typeorm'
-import { HttpExceptionMessage } from '../../consts/http-exception-message'
+import { HttpExceptionMessage } from '../../consts'
 import { hashPassword } from '../../utils/password.util'
 import { CreateUserRequestDTO, UpdateUserRequestDTO, UserResponseDTO, UserResponseWithPasswordDto } from './user.interfaces'
 import { UserRepository } from './user.repository'
@@ -8,7 +8,7 @@ import { UserRepository } from './user.repository'
 @Injectable()
 export class UserService {
   constructor(
-    private readonly repository: UserRepository,
+    private readonly repository: UserRepository
   ) {
   }
 
@@ -61,8 +61,8 @@ export class UserService {
     }
   }
 
-  async findOneByEmailOrUsernameWithPassword(emailOrUsername: string): Promise<UserResponseWithPasswordDto | undefined> {
-    const user = await this.repository.findOneByEmailOrUsernameWithPassword(emailOrUsername)
+  async findOneByEmailWithPassword(emailAddress: string): Promise<UserResponseWithPasswordDto | undefined> {
+    const user = await this.repository.findOneByEmailWithPassword(emailAddress)
     return user ? UserResponseWithPasswordDto.of(user) : user
   }
 }
