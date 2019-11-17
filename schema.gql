@@ -20,6 +20,7 @@ type Ad {
 type AdCategory {
   id: ID!
   name: String!
+  parentCategory: AdCategory!
 }
 
 input AdCreateFirstStepInput {
@@ -53,7 +54,9 @@ enum AdStatus {
   underConsideration
   deleted
   closed
-  notFullFilled
+  firstStepCreated
+  secondStepCreated
+  thirdStepCreated
 }
 
 """Ad types"""

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { AdStatus, AdType, City, CurrencyType } from '../../consts'
 import { AdCategoryEntity } from '../adCategory/adCategory.entity'
 import { ImageEntity } from '../image/image.entity'
@@ -35,7 +35,8 @@ export class AdEntity {
   @Column({ enum: AdStatus })
   status: AdStatus
 
-  @ManyToOne(type => AdCategoryEntity)
+  @ManyToOne(type => AdCategoryEntity, { cascade: true })
+  @JoinColumn({ name: 'category_id' })
   category: AdCategoryEntity
 
   @ManyToMany(type => AdCategoryEntity)

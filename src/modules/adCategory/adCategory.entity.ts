@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('adCategory')
+@Entity('ad_category')
 export class AdCategoryEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -9,5 +9,6 @@ export class AdCategoryEntity {
   name: string
 
   @ManyToOne(type => AdCategoryEntity, adCategory => adCategory.parentCategory)
+  @JoinColumn({ name: 'parent_category_id' })
   parentCategory: AdCategoryEntity
 }

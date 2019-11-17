@@ -7,4 +7,7 @@ export class AdCategory {
 
   @Field()
   name: string
+
+  @Field(type => AdCategory)
+  parentCategory: AdCategory
 }

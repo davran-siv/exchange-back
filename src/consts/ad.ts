@@ -6,7 +6,9 @@ export enum AdStatus {
   underConsideration = 'underConsideration',
   deleted = 'deleted',
   closed = 'closed',
-  notFullFilled = 'notFullFilled'
+  firstStepCreated = 'firstStepCreated',
+  secondStepCreated = 'secondStepCreated',
+  thirdStepCreated = 'thirdStepCreated',
 }
 
 export enum AdType {
