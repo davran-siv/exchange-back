@@ -11,6 +11,10 @@ export class AdRepository {
   ) {
   }
 
+  findOneById(id: string): Promise<AdEntity> {
+    return this.entity.findOne(id)
+  }
+
   async createOrUpdateOne(entityLike: DeepPartial<AdEntity>, entityManager?: EntityManager): Promise<AdEntity> {
     const entity = this.entity.create(entityLike)
     const result = entityManager ? await entityManager.save(entity) : await this.entity.save(entity)

@@ -1,8 +1,10 @@
 import { AdStatus, AdType, City, CurrencyType } from '../../consts'
+import { AdCategoryResponseDTO } from '../adCategory/adCategory.interfaces'
+import { ImageResponseDTO } from '../image/image.interfaces'
 
 export class AdResponseDTO {
   id: string
-  category: any
+  category: AdCategoryResponseDTO
   type: AdType
   title: string
   description: string
@@ -11,7 +13,8 @@ export class AdResponseDTO {
   phoneNumber: string
   currency: CurrencyType
   status: AdStatus
-  interests: any
+  interests: AdCategoryResponseDTO[]
+  images: ImageResponseDTO[]
 }
 
 export interface AdCreateFirstStepDTO {
@@ -23,7 +26,7 @@ export interface AdCreateSecondStepDTO {
   type: AdType
   title: string
   description?: string
-  images?: string[]
+  imageIds?: string[]
 }
 
 export interface AdCreateThirdStepDTO {
@@ -35,5 +38,26 @@ export interface AdCreateThirdStepDTO {
 }
 
 export interface AdCreateForthStepDTO {
-  interestCategoryId: string[]
+  id: string
+  interestCategoryIds: string[]
+}
+
+export interface AdUpdateStatusDTO {
+  id: string,
+  status: AdStatus
+}
+
+export class AdUpdateOneDTO {
+  id: string
+  categoryId?: string
+  type?: AdType
+  title?: string
+  description?: string
+  assessedValue?: number
+  city?: City
+  phoneNumber?: string
+  currency?: CurrencyType
+  status?: AdStatus
+  interestCategoryIds?: string[]
+  imageIds?: string[]
 }

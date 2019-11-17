@@ -18,6 +18,9 @@ $ docker run --rm --name postgres -p5432:5432 -e POSTGRES_PASSWORD=root -e POSTG
 $ npm install
 ```
 
+## Debug
+https://github.com/nestjs/nest/issues/993#issuecomment-461189430
+
 ## Running the app
 
 ```bash

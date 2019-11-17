@@ -18,7 +18,7 @@ export class AdEntity {
   description: string
 
   @Column({ name: 'assessed_value', type: 'integer' })
-  assessedValue: string
+  assessedValue: number
 
   @Column({ name: 'phone_number', type: 'varchar' })
   phoneNumber: string
@@ -35,25 +35,25 @@ export class AdEntity {
   @Column({ enum: AdStatus })
   status: AdStatus
 
-  @ManyToOne(type => AdCategoryEntity, { cascade: true })
+  @ManyToOne(type => AdCategoryEntity, { eager: true })
   @JoinColumn({ name: 'category_id' })
   category: AdCategoryEntity
 
-  @ManyToMany(type => AdCategoryEntity)
+  @ManyToMany(type => AdCategoryEntity, { eager: true })
   @JoinTable({
     name: 'ad_interest',
     joinColumn: { name: 'ad_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'ad_category_id', referencedColumnName: 'id' }
   })
-  interests: AdCategoryEntity
+  interests: AdCategoryEntity[]
 
-  @ManyToMany(type => ImageEntity)
+  @ManyToMany(type => ImageEntity, { eager: true })
   @JoinTable({
     name: 'ad_image',
     joinColumn: { name: 'ad_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'image_id', referencedColumnName: 'id' }
   })
-  images: ImageEntity
+  images: ImageEntity[]
 
   @Column({ name: 'created_at', type: 'time without time zone' })
   createdAt: Date

@@ -8,6 +8,6 @@ export class AdCategory {
   @Field()
   name: string
 
-  @Field(type => AdCategory)
-  parentCategory: AdCategory
+  @Field(type => AdCategory, { nullable: true })
+  parentCategory?: AdCategory
 }

@@ -15,12 +15,13 @@ type Ad {
   status: AdStatus!
   category: AdCategory!
   interests: [AdCategory!]!
+  images: [Image!]!
 }
 
 type AdCategory {
   id: ID!
   name: String!
-  parentCategory: AdCategory!
+  parentCategory: AdCategory
 }
 
 input AdCreateFirstStepInput {
@@ -28,7 +29,8 @@ input AdCreateFirstStepInput {
 }
 
 input AdCreateFourthStepInput {
-  interestCategoryId: [Int!]!
+  id: ID!
+  interestCategoryIds: [String!]!
 }
 
 input AdCreateSecondStepInput {
@@ -36,15 +38,15 @@ input AdCreateSecondStepInput {
   type: AdType!
   title: String!
   description: String!
-  images: [Int!]!
+  images: [String!]
 }
 
 input AdCreateThirdStepInput {
   id: ID!
-  assessedValue: Float!
-  currency: CurrencyType!
+  assessedValue: Float
+  currency: CurrencyType
   city: City!
-  phoneNumber: String!
+  phoneNumber: String
 }
 
 """Ad statuses"""
@@ -63,6 +65,21 @@ enum AdStatus {
 enum AdType {
   service
   product
+}
+
+input AdUpdateOneInput {
+  id: ID!
+  title: String
+  description: String
+  assessedValue: Float
+  phoneNumber: String
+  currency: CurrencyType
+  type: AdType
+  city: City
+  status: AdStatus
+  categoryId: [String!]
+  interestCategoryIds: [String!]
+  imageIds: [String!]
 }
 
 type AuthJwtTokes {
@@ -89,22 +106,30 @@ enum CurrencyType {
   som
 }
 
+type Image {
+  id: ID!
+  path: String!
+}
+
 input LoginByCredentialsInput {
   emailAddress: String!
   password: String!
 }
 
 type Mutation {
-  creatAdFirstStep(ad: AdCreateFirstStepInput!): Ad!
-  creatAdSecondStep(ad: AdCreateSecondStepInput!): Ad!
-  creatAdThirdStep(ad: AdCreateThirdStepInput!): Ad!
-  creatAdForthStep(ad: AdCreateFourthStepInput!): Ad!
+  adCreatFirstStep(ad: AdCreateFirstStepInput!): Ad!
+  adCreatSecondStep(ad: AdCreateSecondStepInput!): Ad!
+  adCreatThirdStep(ad: AdCreateThirdStepInput!): Ad!
+  adCreatForthStep(ad: AdCreateFourthStepInput!): Ad!
+  adRemoveOne(id: String!): Boolean!
+  adUpdateOne(ad: AdUpdateOneInput!): Ad!
   createUser(user: CreateUserInput!): User!
   updateUser(user: UpdateUserInput!): User!
   removeUser(id: String!): Boolean!
 }
 
 type Query {
+  ad(id: String!): Ad!
   user(id: String!): User!
   loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
   refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
