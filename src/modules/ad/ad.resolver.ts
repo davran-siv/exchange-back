@@ -34,13 +34,28 @@ export class AdResolver {
     return this.service.createAdForthStep(ad)
   }
 
-  @Mutation(returns => Boolean, { name: 'adRemoveOne' })
-  removeOne(@Args('id') id: string): Promise<boolean> {
-    return this.service.removeOne(id)
-  }
-
   @Mutation(returns => Ad, { name: 'adUpdateOne' })
   updateOne(@Args('ad') ad: AdUpdateOneInput): Promise<Ad> {
     return this.service.updateOne(ad)
+  }
+
+  @Mutation(returns => Ad, { name: 'adSetApprovedStatus' })
+  setApprovedStatus(@Args('id') id: string): Promise<Ad> {
+    return this.service.setApprovedStatus(id)
+  }
+
+  @Mutation(returns => Ad, { name: 'adSetBannedStatus' })
+  setBannedStatus(@Args('id') id: string): Promise<Ad> {
+    return this.service.setBannedStatus(id)
+  }
+
+  @Mutation(returns => Ad, { name: 'adSetClosedStatus' })
+  setClosedStatus(@Args('id') id: string): Promise<Ad> {
+    return this.service.setClosedStatus(id)
+  }
+
+  @Mutation(returns => Boolean, { name: 'adRemoveOne' })
+  removeOne(@Args('id') id: string): Promise<boolean> {
+    return this.service.removeOne(id)
   }
 }

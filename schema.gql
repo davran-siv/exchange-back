@@ -121,8 +121,11 @@ type Mutation {
   adCreatSecondStep(ad: AdCreateSecondStepInput!): Ad!
   adCreatThirdStep(ad: AdCreateThirdStepInput!): Ad!
   adCreatForthStep(ad: AdCreateFourthStepInput!): Ad!
-  adRemoveOne(id: String!): Boolean!
   adUpdateOne(ad: AdUpdateOneInput!): Ad!
+  adSetApprovedStatus(id: String!): Ad!
+  adSetBannedStatus(id: String!): Ad!
+  adSetClosedStatus(id: String!): Ad!
+  adRemoveOne(id: String!): Boolean!
   createUser(user: CreateUserInput!): User!
   updateUser(user: UpdateUserInput!): User!
   removeUser(id: String!): Boolean!

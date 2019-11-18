@@ -29,7 +29,10 @@ export class AdService {
       interests: interestCategoryIds && interestCategoryIds.map(id => ({ id })),
       images: imageIds && imageIds.map(id => ({ id }))
     }
+  }
 
+  private updateStatusOne(dto: AdUpdateStatusDTO): Promise<AdResponseDTO> {
+    return this.repository.createOrUpdateOne(dto)
   }
 
   findOneById(id: string): Promise<AdResponseDTO> {
@@ -69,6 +72,26 @@ export class AdService {
     return this.repository.createOrUpdateOne(entityLike)
   }
 
+  async updateOne(dto: AdUpdateOneDTO): Promise<AdResponseDTO> {
+    const entityLike = this.createEntityLikeObject(dto)
+    return await this.repository.createOrUpdateOne(entityLike)
+  }
+
+  setApprovedStatus(id: string): Promise<AdResponseDTO> {
+    const entityLike = { id, status: AdStatus.approved }
+    return this.updateStatusOne(entityLike)
+  }
+
+  setBannedStatus(id: string): Promise<AdResponseDTO> {
+    const entityLike = { id, status: AdStatus.banned }
+    return this.updateStatusOne(entityLike)
+  }
+
+  setClosedStatus(id: string): Promise<AdResponseDTO> {
+    const entityLike = { id, status: AdStatus.closed }
+    return this.updateStatusOne(entityLike)
+  }
+
   async removeOne(id: string): Promise<boolean> {
     const entityLike = {
       id,
@@ -76,14 +99,5 @@ export class AdService {
     }
 
     return !!await this.repository.createOrUpdateOne(entityLike)
-  }
-
-  async updateStatusOne(dto: AdUpdateStatusDTO): Promise<AdResponseDTO> {
-    return await this.repository.createOrUpdateOne(dto)
-  }
-
-  async updateOne(dto: AdUpdateOneDTO): Promise<AdResponseDTO> {
-    const entityLike = this.createEntityLikeObject(dto)
-    return await this.repository.createOrUpdateOne(entityLike)
   }
 }
