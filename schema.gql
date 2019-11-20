@@ -21,7 +21,18 @@ type Ad {
 type AdCategory {
   id: ID!
   name: String!
-  parentCategory: AdCategory
+  parent: AdCategory
+}
+
+input AdCategoryCreateInput {
+  name: String!
+  parentId: String
+}
+
+input AdCategoryUpdateInput {
+  id: ID!
+  name: String!
+  parentId: String
 }
 
 input AdCreateFirstStepInput {
@@ -117,15 +128,18 @@ input LoginByCredentialsInput {
 }
 
 type Mutation {
-  adCreatFirstStep(ad: AdCreateFirstStepInput!): Ad!
-  adCreatSecondStep(ad: AdCreateSecondStepInput!): Ad!
-  adCreatThirdStep(ad: AdCreateThirdStepInput!): Ad!
-  adCreatForthStep(ad: AdCreateFourthStepInput!): Ad!
+  adCreateFirstStep(ad: AdCreateFirstStepInput!): Ad!
+  adCreateSecondStep(ad: AdCreateSecondStepInput!): Ad!
+  adCreateThirdStep(ad: AdCreateThirdStepInput!): Ad!
+  adCreateForthStep(ad: AdCreateFourthStepInput!): Ad!
   adUpdateOne(ad: AdUpdateOneInput!): Ad!
   adSetApprovedStatus(id: String!): Ad!
   adSetBannedStatus(id: String!): Ad!
   adSetClosedStatus(id: String!): Ad!
   adRemoveOne(id: String!): Boolean!
+  adCategoryCreateOne(adCategory: AdCategoryCreateInput!): AdCategory!
+  adCategoryUpdateOne(adCategory: AdCategoryUpdateInput!): AdCategory!
+  adCategoryRemoveOne(id: String!): Boolean!
   createUser(user: CreateUserInput!): User!
   updateUser(user: UpdateUserInput!): User!
   removeUser(id: String!): Boolean!
@@ -133,6 +147,9 @@ type Mutation {
 
 type Query {
   ad(id: String!): Ad!
+  adCategoryFindAll: [AdCategory!]!
+  adCategoryFindOneById(id: String!): AdCategory!
+  adCategoryFindManyByParentId(id: String!): [AdCategory!]!
   user(id: String!): User!
   loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
   refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!

@@ -5,7 +5,9 @@
   "username": "root",
   "password": "root",
   "database": "exchange",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "entities": [
+    "dist/**/*.entity.js"
+  ],
   "migrations": ["dist/migrations/*.js"],
   "synchronize": false,
   "logging": true,

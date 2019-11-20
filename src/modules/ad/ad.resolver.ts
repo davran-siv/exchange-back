@@ -14,23 +14,23 @@ export class AdResolver {
     return this.service.findOneById(id)
   }
 
-  @Mutation(returns => Ad, { name: 'adCreatFirstStep' })
-  creatAdFirstStep(@Args('ad') ad: AdCreateFirstStepInput): Promise<Ad> {
+  @Mutation(returns => Ad, { name: 'adCreateFirstStep' })
+  createAdFirstStep(@Args('ad') ad: AdCreateFirstStepInput): Promise<Ad> {
     return this.service.createAdFirstStep(ad)
   }
 
-  @Mutation(returns => Ad, { name: 'adCreatSecondStep' })
-  creatAdSecondStep(@Args('ad') ad: AdCreateSecondStepInput): Promise<Ad> {
+  @Mutation(returns => Ad, { name: 'adCreateSecondStep' })
+  createAdSecondStep(@Args('ad') ad: AdCreateSecondStepInput): Promise<Ad> {
     return this.service.createAdSecondStep(ad)
   }
 
-  @Mutation(returns => Ad, { name: 'adCreatThirdStep' })
-  creatAdThirdStep(@Args('ad') ad: AdCreateThirdStepInput): Promise<Ad> {
+  @Mutation(returns => Ad, { name: 'adCreateThirdStep' })
+  createAdThirdStep(@Args('ad') ad: AdCreateThirdStepInput): Promise<Ad> {
     return this.service.createAdThirdStep(ad)
   }
 
-  @Mutation(returns => Ad, { name: 'adCreatForthStep' })
-  creatAdForthStep(@Args('ad') ad: AdCreateFourthStepInput): Promise<Ad> {
+  @Mutation(returns => Ad, { name: 'adCreateForthStep' })
+  createAdForthStep(@Args('ad') ad: AdCreateFourthStepInput): Promise<Ad> {
     return this.service.createAdForthStep(ad)
   }
 

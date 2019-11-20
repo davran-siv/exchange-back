@@ -1,19 +1,19 @@
 import { registerEnumType } from 'type-graphql'
 
 export enum AdStatus {
-  approved = 'approved',
-  banned = 'banned',
-  underConsideration = 'underConsideration',
-  deleted = 'deleted',
-  closed = 'closed',
-  firstStepCreated = 'firstStepCreated',
-  secondStepCreated = 'secondStepCreated',
-  thirdStepCreated = 'thirdStepCreated',
+  approved = 'APPROVED',
+  banned = 'BANNED',
+  underConsideration = 'UNDER_CONSIDERATION',
+  deleted = 'DELETED',
+  closed = 'CLOSED',
+  firstStepCreated = 'FIRST_STEP_CREATED',
+  secondStepCreated = 'SECOND_STEP_CREATED',
+  thirdStepCreated = 'THIRD_STEP_CREATED',
 }
 
 export enum AdType {
-  service = 'service',
-  product = 'product'
+  service = 'SERVICE',
+  product = 'PRODUCT'
 }
 
 registerEnumType(AdStatus, {

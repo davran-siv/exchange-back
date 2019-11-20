@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Field, ID, InputType, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class AdCategory {
@@ -9,5 +9,26 @@ export class AdCategory {
   name: string
 
   @Field(type => AdCategory, { nullable: true })
-  parentCategory?: AdCategory
+  parent?: AdCategory
+}
+
+@InputType()
+export class AdCategoryCreateInput {
+  @Field()
+  name: string
+
+  @Field({ nullable: true })
+  parentId?: string
+}
+
+@InputType()
+export class AdCategoryUpdateInput {
+  @Field(type => ID)
+  id: string
+
+  @Field()
+  name: string
+
+  @Field({ nullable: true })
+  parentId?: string
 }

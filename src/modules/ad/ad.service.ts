@@ -44,7 +44,8 @@ export class AdService {
       status: AdStatus.firstStepCreated,
       category: { id: dto.categoryId }
     }
-    return this.repository.createOrUpdateOne(entityLike)
+    const result = await this.repository.createOrUpdateOne(entityLike)
+    return result
   }
 
   async createAdSecondStep(dto: AdCreateSecondStepDTO): Promise<AdResponseDTO> {

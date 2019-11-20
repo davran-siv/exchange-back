@@ -5,10 +5,12 @@ import { AppModule } from './app.module'
 
 async function bootstrap() {
   // await runMigration()
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: false
+  })
   initSwagger(app)
   app.useGlobalPipes(new ValidationPipe())
-  await app.listen(3000)
+  await app.listen(5000)
 }
 
 const initSwagger = (app) => {

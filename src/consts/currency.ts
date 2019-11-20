@@ -1,8 +1,8 @@
 import { registerEnumType } from 'type-graphql'
 
 export enum CurrencyType {
-  dollar = 'dollar',
-  som = 'som'
+  dollar = 'DOLLAR',
+  som = 'SOM'
 }
 
 registerEnumType(CurrencyType, {

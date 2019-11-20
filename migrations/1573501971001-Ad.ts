@@ -14,7 +14,7 @@ export class Ad1573501971001 implements MigrationInterface {
         { name: 'city', type: 'VARCHAR', length: '15', isNullable: true },
         { name: 'phone_number', type: 'VARCHAR', length: '20', isNullable: true },
         { name: 'currency', type: 'VARCHAR', length: '10', isNullable: true },
-        { name: 'status', type: 'VARCHAR', length: '10', isNullable: true },
+        { name: 'status', type: 'VARCHAR', length: '50', isNullable: true },
         { name: 'consider_options', type: 'BOOLEAN', isNullable: true },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE', default: 'NOW()' },
         { name: 'updated_at', type: 'TIMESTAMP WITH TIME ZONE', isNullable: true }

@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm'
 
+@Tree('materialized-path')
 @Entity('ad_category')
 export class AdCategoryEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -8,7 +9,10 @@ export class AdCategoryEntity {
   @Column()
   name: string
 
-  @ManyToOne(type => AdCategoryEntity, adCategory => adCategory.parentCategory)
-  @JoinColumn({ name: 'parent_category_id' })
-  parentCategory: AdCategoryEntity
+  @TreeParent()
+  @JoinColumn({ name: 'parent_id' })
+  parent: AdCategoryEntity
+
+  @TreeChildren()
+  children: AdCategoryEntity[]
 }
