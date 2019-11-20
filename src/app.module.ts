@@ -15,7 +15,8 @@ import { UserModule } from './modules/user/user.module'
     AdCategoryModule,
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
-      autoSchemaFile: 'schema.gql'
+      autoSchemaFile: 'schema.gql',
+      context: ({ req }) => ({ req })
     })
   ],
   controllers: [],

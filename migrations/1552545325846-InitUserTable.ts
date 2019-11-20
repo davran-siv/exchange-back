@@ -4,7 +4,7 @@ export class InitUserTable1552545325846 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.createTable(new Table({
-      name: 'users',
+      name: 'user',
       columns: [
         { name: 'id', type: 'UUID', isPrimary: true, default: 'uuid_generate_v4()', isUnique: true },
         { name: 'first_name', type: 'VARCHAR', length: '255' },

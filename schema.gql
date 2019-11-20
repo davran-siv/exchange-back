@@ -150,7 +150,8 @@ type Query {
   adCategoryFindAll: [AdCategory!]!
   adCategoryFindOneById(id: String!): AdCategory!
   adCategoryFindManyByParentId(id: String!): [AdCategory!]!
-  user(id: String!): User!
+  findUserById(id: String!): User!
+  me: User!
   loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
   refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
 }

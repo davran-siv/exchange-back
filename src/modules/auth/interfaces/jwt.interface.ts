@@ -1,9 +1,11 @@
-export interface JwtPayloadDto {
-  id: string
-  email: string
-  username: string
+export interface JwtPayloadDto extends JwtUserPayload {
   iat: number
   exp: number
+}
+
+export interface JwtUserPayload {
+  id: string
+  email: string
 }
 
 export interface JwtRefreshTokenPayloadDto {
