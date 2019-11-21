@@ -6,7 +6,7 @@ ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 
 WORKDIR /exchange
 
-USER node
+USER root
 
 RUN ls -la
 
