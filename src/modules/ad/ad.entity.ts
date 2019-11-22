@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGe
 import { AdStatus, AdType, City, CurrencyType } from '../../consts'
 import { AdCategoryEntity } from '../adCategory/adCategory.entity'
 import { ImageEntity } from '../image/image.entity'
+import { UserEntity } from '../user/user.entity'
 
 @Entity('ad')
 export class AdEntity {
@@ -39,6 +40,10 @@ export class AdEntity {
   @JoinColumn({ name: 'category_id' })
   category: AdCategoryEntity
 
+  @ManyToOne(type => UserEntity, author => author.ads, { eager: true })
+  @JoinColumn({ name: 'author_id' })
+  author: UserEntity
+
   @ManyToMany(type => AdCategoryEntity, { eager: true })
   @JoinTable({
     name: 'ad_interest',
@@ -61,4 +66,11 @@ export class AdEntity {
   @Column({ name: 'updated_at', type: 'time without time zone' })
   updatedAt: Date
 
+  @ManyToMany(type => UserEntity)
+  @JoinTable({
+    name: 'favorite_ad',
+    joinColumn: { name: 'ad_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
+  })
+  favoriteToUsers: UserEntity[]
 }

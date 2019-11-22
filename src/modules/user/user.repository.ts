@@ -29,9 +29,17 @@ export class UserRepository {
                .getOne()
   }
 
-  findOneByEmailWithPassword(emailAddress: string): Promise<UserEntity> {
+  findOneByEmailWithPassword(emailAddress: string): Promise<UserEntity | undefined> {
     return this.entity.createQueryBuilder('users')
                .where('users.emailAddress = :emailAddress', { emailAddress })
+               .andWhere('users.isDeleted = false')
+               .addSelect('users.password')
+               .getOne()
+  }
+
+  findOneByIdWithPassword(id: string): Promise<UserEntity | undefined> {
+    return this.entity.createQueryBuilder('users')
+               .where('users.id = :id', { id })
                .andWhere('users.isDeleted = false')
                .addSelect('users.password')
                .getOne()

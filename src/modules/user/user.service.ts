@@ -1,8 +1,8 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { EntityManager, Transaction, TransactionManager } from 'typeorm'
 import { HttpExceptionMessage } from '../../consts'
-import { hashPassword } from '../../utils/password.util'
-import { CreateUserRequestDTO, UpdateUserRequestDTO, UserResponseDTO, UserResponseWithPasswordDto } from './user.interfaces'
+import { hashPassword, validatePassword } from '../../utils/password.util'
+import { CreateUserRequestDTO, UpdateUserRequestDTO, UserChangePasswordDTO, UserResponseDTO, UserResponseWithPasswordDto } from './user.interfaces'
 import { UserRepository } from './user.repository'
 
 @Injectable()
@@ -25,7 +25,6 @@ export class UserService {
       throw new NotFoundException()
     }
     return user
-    // return UserResponseDTO.of(user)
   }
 
   @Transaction()
@@ -64,5 +63,26 @@ export class UserService {
   async findOneByEmailWithPassword(emailAddress: string): Promise<UserResponseWithPasswordDto | undefined> {
     const user = await this.repository.findOneByEmailWithPassword(emailAddress)
     return user ? UserResponseWithPasswordDto.of(user) : user
+  }
+
+  async findOneByIdWithPassword(id: string): Promise<UserResponseWithPasswordDto | undefined> {
+    const user = await this.repository.findOneByIdWithPassword(id)
+    return user ? UserResponseWithPasswordDto.of(user) : user
+  }
+
+  async changePassword(dto: UserChangePasswordDTO): Promise<UserResponseDTO> {
+    const user = await this.findOneByIdWithPassword(dto.userId)
+    if (!user) {
+      throw new NotFoundException()
+    }
+
+    const hashedPreviousPassword = await hashPassword(dto.previousPassword)
+    if (!validatePassword(user.password, hashedPreviousPassword)) {
+      throw new ForbiddenException(HttpExceptionMessage.user.previousPasswordIsIncorrect)
+    }
+
+    const hashedNewPassword = await hashPassword(dto.newPassword)
+    await this.repository.createOrUpdateOne({ id: dto.userId, password: hashedNewPassword })
+    return user
   }
 }

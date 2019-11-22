@@ -1,42 +1,26 @@
-import { ApiModelProperty } from '@nestjs/swagger'
 import { UserEntity } from './user.entity'
 
 export class CreateUserRequestDTO {
-  @ApiModelProperty()
   readonly firstName: string
-  @ApiModelProperty()
   readonly lastName: string
-  @ApiModelProperty()
   readonly password: string
-  @ApiModelProperty()
   readonly emailAddress: string
-  @ApiModelProperty({ required: false })
   readonly photo?: string
 }
 
 export class UpdateUserRequestDTO {
-  @ApiModelProperty()
   readonly id: string
-  @ApiModelProperty({ required: false })
   readonly firstName?: string
-  @ApiModelProperty({ required: false })
   readonly lastName?: string
-  @ApiModelProperty({ required: false })
   readonly emailAddress?: string
-  @ApiModelProperty({ required: false })
   readonly photo?: string
 }
 
 export class UserResponseDTO {
-  @ApiModelProperty()
   readonly id: string
-  @ApiModelProperty()
   readonly firstName: string
-  @ApiModelProperty()
   readonly lastName: string
-  @ApiModelProperty()
   readonly emailAddress: string
-  @ApiModelProperty()
   readonly photo: string | null
 
   constructor(model: UserEntity) {
@@ -56,18 +40,12 @@ export class UserResponseDTO {
 }
 
 export class UserResponseWithPasswordDto {
-  @ApiModelProperty()
-  id: string
-  @ApiModelProperty()
-  firstName: string
-  @ApiModelProperty()
-  lastName: string
-  @ApiModelProperty()
-  emailAddress: string
-  @ApiModelProperty()
-  password: string
-  @ApiModelProperty()
-  photo: string | null
+  readonly id: string
+  readonly firstName: string
+  readonly lastName: string
+  readonly emailAddress: string
+  readonly password: string
+  readonly photo: string | null
 
   constructor(model: UserEntity) {
     this.id = model.id
@@ -86,4 +64,10 @@ export class UserResponseWithPasswordDto {
       ? model.map(it => new UserResponseWithPasswordDto(it))
       : new UserResponseWithPasswordDto(model)
   }
+}
+
+export class UserChangePasswordDTO {
+  readonly userId: string
+  readonly previousPassword: string
+  readonly newPassword: string
 }

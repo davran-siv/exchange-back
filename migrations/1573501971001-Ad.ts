@@ -6,7 +6,6 @@ export class Ad1573501971001 implements MigrationInterface {
       name: 'ad',
       columns: [
         { name: 'id', type: 'UUID', isPrimary: true, default: 'uuid_generate_v4()', isUnique: true },
-        { name: 'category_id', type: 'UUID' },
         { name: 'type', type: 'VARCHAR', length: '10', isNullable: true },
         { name: 'title', type: 'VARCHAR', length: '255', isNullable: true },
         { name: 'description', type: 'TEXT', isNullable: true },
@@ -16,6 +15,8 @@ export class Ad1573501971001 implements MigrationInterface {
         { name: 'currency', type: 'VARCHAR', length: '10', isNullable: true },
         { name: 'status', type: 'VARCHAR', length: '50', isNullable: true },
         { name: 'consider_options', type: 'BOOLEAN', isNullable: true },
+        { name: 'category_id', type: 'UUID' },
+        { name: 'author_id', type: 'UUID' },
         { name: 'created_at', type: 'TIMESTAMP WITH TIME ZONE', default: 'NOW()' },
         { name: 'updated_at', type: 'TIMESTAMP WITH TIME ZONE', isNullable: true }
       ]
@@ -25,6 +26,12 @@ export class Ad1573501971001 implements MigrationInterface {
       columnNames: ['category_id'],
       referencedColumnNames: ['id'],
       referencedTableName: 'ad_category'
+    }))
+
+    await queryRunner.createForeignKey('ad', new TableForeignKey({
+      columnNames: ['author_id'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'user'
     }))
   }
 

@@ -11,7 +11,7 @@ export class AdRepository {
   ) {
   }
 
-  findOneById(id: string): Promise<AdEntity> {
+  findOneById(id: string): Promise<AdEntity | undefined> {
     return this.entity.findOne(id)
   }
 
@@ -19,6 +19,28 @@ export class AdRepository {
     const entity = this.entity.create(entityLike)
     const result = entityManager ? await entityManager.save(entity) : await this.entity.save(entity)
     return this.entity.findOne(result.id)
+  }
+
+  async findByIdAndAuthorId(id: string, authorId: string): Promise<AdEntity | undefined> {
+    return this.entity.createQueryBuilder('ad')
+               .leftJoin('ad.author', 'author')
+               .where('ad.id = :id', { id })
+               .andWhere('author.id = :authorId', { authorId })
+               .getOne()
+  }
+
+  findManyFavoritesByUserId(userId: string): Promise<AdEntity[]> {
+    return this.entity.createQueryBuilder('ad')
+               .leftJoin('ad.favoriteToUsers', 'favoriteToUsers')
+               .where('favoriteToUsers.id = :userId', { userId })
+               .getMany()
+  }
+
+  findOneWithFavoriteToUsers(id: string): Promise<AdEntity> {
+    return this.entity.createQueryBuilder('ad')
+               .leftJoinAndSelect('ad.favoriteToUsers', 'favoriteToUsers')
+               .where('ad.id = :id', { id })
+               .getOne()
   }
 
 }

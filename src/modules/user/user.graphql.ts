@@ -20,7 +20,7 @@ export class User {
 }
 
 @InputType()
-export class CreateUserInput {
+export class UserCreateInput {
   @Field()
   firstName: string
 
@@ -41,7 +41,7 @@ export class CreateUserInput {
 }
 
 @InputType()
-export class UpdateUserInput {
+export class UserUpdateInput {
   @Field(type => ID)
   id: string
 
@@ -59,4 +59,13 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   @IsOptional()
   photo?: string
+}
+
+@InputType()
+export class UserChangePasswordInput {
+  @Field()
+  previousPassword: string
+
+  @Field()
+  newPassword: string
 }

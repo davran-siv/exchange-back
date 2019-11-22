@@ -1,6 +1,7 @@
 import { AdStatus, AdType, City, CurrencyType } from '../../consts'
 import { AdCategoryResponseDTO } from '../adCategory/adCategory.interfaces'
 import { ImageResponseDTO } from '../image/image.interfaces'
+import { UserResponseDTO } from '../user/user.interfaces'
 
 export class AdResponseDTO {
   id: string
@@ -47,7 +48,7 @@ export interface AdUpdateStatusDTO {
   status: AdStatus
 }
 
-export class AdUpdateOneDTO {
+export interface AdUpdateOneDTO {
   id: string
   categoryId?: string
   type?: AdType
@@ -60,4 +61,8 @@ export class AdUpdateOneDTO {
   status?: AdStatus
   interestCategoryIds?: string[]
   imageIds?: string[]
+}
+
+export interface AdResponseWithFavoriteToUsersDTO extends AdResponseDTO {
+  favoriteToUsers: UserResponseDTO[]
 }

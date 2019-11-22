@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { AdEntity } from '../ad/ad.entity'
 
 @Entity('user')
 export class UserEntity {
@@ -41,4 +42,14 @@ export class UserEntity {
   @Column({ name: 'updated_at', type: 'time without time zone' })
   updatedAt: Date
 
+  @OneToMany(type => AdEntity, ads => ads.author)
+  ads: AdEntity[]
+
+  @ManyToMany(type => AdEntity)
+  @JoinTable({
+    name: 'favorite_ad',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'ad_id', referencedColumnName: 'id' }
+  })
+  favoriteAds: AdEntity[]
 }

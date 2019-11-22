@@ -103,14 +103,6 @@ enum City {
   bishkek
 }
 
-input CreateUserInput {
-  firstName: String!
-  lastName: String!
-  emailAddress: String!
-  password: String!
-  photo: String
-}
-
 """All possible currency"""
 enum CurrencyType {
   dollar
@@ -136,12 +128,15 @@ type Mutation {
   adSetApprovedStatus(id: String!): Ad!
   adSetBannedStatus(id: String!): Ad!
   adSetClosedStatus(id: String!): Ad!
+  adAddToFavorite(id: String!): [Ad!]!
+  adRemoveFromFavorite(id: String!): [Ad!]!
   adRemoveOne(id: String!): Boolean!
   adCategoryCreateOne(adCategory: AdCategoryCreateInput!): AdCategory!
   adCategoryUpdateOne(adCategory: AdCategoryUpdateInput!): AdCategory!
   adCategoryRemoveOne(id: String!): Boolean!
-  createUser(user: CreateUserInput!): User!
-  updateUser(user: UpdateUserInput!): User!
+  userCreate(user: UserCreateInput!): User!
+  userUpdate(user: UserUpdateInput!): User!
+  userChangePassword(passwords: UserChangePasswordInput!): User!
   removeUser(id: String!): Boolean!
 }
 
@@ -150,8 +145,8 @@ type Query {
   adCategoryFindAll: [AdCategory!]!
   adCategoryFindOneById(id: String!): AdCategory!
   adCategoryFindManyByParentId(id: String!): [AdCategory!]!
-  findUserById(id: String!): User!
-  me: User!
+  userFindById(id: String!): User!
+  userMe: User!
   loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
   refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
 }
@@ -160,18 +155,31 @@ input RefreshTokenInput {
   refreshToken: String!
 }
 
-input UpdateUserInput {
-  id: ID!
-  firstName: String
-  lastName: String
-  emailAddress: String
-  photo: String
-}
-
 type User {
   id: ID!
   firstName: String!
   lastName: String!
   emailAddress: String!
+  photo: String
+}
+
+input UserChangePasswordInput {
+  previousPassword: String!
+  newPassword: String!
+}
+
+input UserCreateInput {
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
+  password: String!
+  photo: String
+}
+
+input UserUpdateInput {
+  id: ID!
+  firstName: String
+  lastName: String
+  emailAddress: String
   photo: String
 }
