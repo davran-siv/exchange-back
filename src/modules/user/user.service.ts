@@ -1,8 +1,16 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { EntityManager, Transaction, TransactionManager } from 'typeorm'
 import { HttpExceptionMessage } from '../../consts'
+import { EmailStatus } from '../../consts/email'
 import { hashPassword, validatePassword } from '../../utils/password.util'
-import { CreateUserRequestDTO, UpdateUserRequestDTO, UserChangePasswordDTO, UserResponseDTO, UserResponseWithPasswordDto } from './user.interfaces'
+import {
+  CreateUserRequestDTO,
+  UpdateUserRequestDTO,
+  UserChangePasswordDTO,
+  UserEmailStatusDTO,
+  UserResponseDTO,
+  UserResponseWithPasswordDto
+} from './user.interfaces'
 import { UserRepository } from './user.repository'
 
 @Injectable()
@@ -65,6 +73,11 @@ export class UserService {
     return user ? UserResponseWithPasswordDto.of(user) : user
   }
 
+  async findOneByEmail(emailAddress: string): Promise<UserResponseWithPasswordDto | undefined> {
+    const user = await this.repository.findOneByEmail(emailAddress)
+    return user ? UserResponseWithPasswordDto.of(user) : user
+  }
+
   async findOneByIdWithPassword(id: string): Promise<UserResponseWithPasswordDto | undefined> {
     const user = await this.repository.findOneByIdWithPassword(id)
     return user ? UserResponseWithPasswordDto.of(user) : user
@@ -85,4 +98,22 @@ export class UserService {
     await this.repository.createOrUpdateOne({ id: dto.userId, password: hashedNewPassword })
     return user
   }
+
+  async getEmailStatus(emailAddress: string): Promise<UserEmailStatusDTO> {
+    const user = await this.findOneByEmail(emailAddress)
+    if (!user) {
+      return {
+        status: EmailStatus.free
+      }
+    }
+    if (!user.isEmailVerified) {
+      return {
+        status: EmailStatus.notConfirmed
+      }
+    }
+    return {
+      status: EmailStatus.exists
+    }
+  }
+
 }

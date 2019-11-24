@@ -1,8 +1,9 @@
 import { IsEmail, IsOptional, Length } from 'class-validator'
 import { Field, ID, InputType, ObjectType } from 'type-graphql'
+import { EmailStatus } from '../../consts/email'
 
 @ObjectType()
-export class User {
+export class UserQuery {
   @Field(type => ID)
   id: string
 
@@ -17,6 +18,12 @@ export class User {
 
   @Field({ nullable: true })
   photo?: string
+}
+
+@ObjectType()
+export class EmailStatusQuery {
+  @Field()
+  status: EmailStatus
 }
 
 @InputType()
@@ -68,4 +75,10 @@ export class UserChangePasswordInput {
 
   @Field()
   newPassword: string
+}
+
+@ObjectType()
+export class UserEmailStatusQuery {
+  @Field(type => EmailStatus)
+  status: EmailStatus
 }

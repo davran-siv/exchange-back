@@ -1,3 +1,4 @@
+import { EmailStatus } from '../../consts/email'
 import { UserEntity } from './user.entity'
 
 export class CreateUserRequestDTO {
@@ -22,6 +23,7 @@ export class UserResponseDTO {
   readonly lastName: string
   readonly emailAddress: string
   readonly photo: string | null
+  readonly isEmailVerified: boolean
 
   constructor(model: UserEntity) {
     this.id = model.id
@@ -29,6 +31,7 @@ export class UserResponseDTO {
     this.lastName = model.lastName
     this.emailAddress = model.emailAddress
     this.photo = model.photo
+    this.isEmailVerified = model.isEmailVerified
   }
 
   static of(model: UserEntity): UserResponseDTO
@@ -39,20 +42,11 @@ export class UserResponseDTO {
   }
 }
 
-export class UserResponseWithPasswordDto {
-  readonly id: string
-  readonly firstName: string
-  readonly lastName: string
-  readonly emailAddress: string
+export class UserResponseWithPasswordDto extends UserResponseDTO {
   readonly password: string
-  readonly photo: string | null
 
   constructor(model: UserEntity) {
-    this.id = model.id
-    this.firstName = model.firstName
-    this.lastName = model.lastName
-    this.emailAddress = model.emailAddress
-    this.photo = model.photo
+    super(model)
     this.password = model.password
   }
 
@@ -70,4 +64,8 @@ export class UserChangePasswordDTO {
   readonly userId: string
   readonly previousPassword: string
   readonly newPassword: string
+}
+
+export interface UserEmailStatusDTO {
+  status: EmailStatus
 }

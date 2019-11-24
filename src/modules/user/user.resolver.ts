@@ -3,48 +3,53 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from '../../common/authGuard'
 import { CurrentUser } from '../../common/currentUser.decorator'
 import { JwtUserPayload } from '../auth/interfaces/jwt.interface'
-import { User, UserChangePasswordInput, UserCreateInput, UserUpdateInput } from './user.graphql'
+import { UserChangePasswordInput, UserCreateInput, UserEmailStatusQuery, UserQuery, UserUpdateInput } from './user.graphql'
 import { UserService } from './user.service'
 
-@Resolver(of => User)
+@Resolver(of => UserQuery)
 export class UserResolver {
   constructor(
     private readonly service: UserService
   ) {
   }
 
-  @Query(returns => User, { name: 'userFindById' })
-  async findOneById(@Args('id') id: string): Promise<User> {
+  @Query(returns => UserQuery, { name: 'userFindById' })
+  async findOneById(@Args('id') id: string): Promise<UserQuery> {
     return this.service.findOneById(id)
   }
 
-  @Query(returns => User, { name: 'userMe' })
+  @Query(returns => UserQuery, { name: 'userMe' })
   @UseGuards(GqlAuthGuard)
-  async findMe(@CurrentUser() userPayload: JwtUserPayload): Promise<User> {
+  async findMe(@CurrentUser() userPayload: JwtUserPayload): Promise<UserQuery> {
     return this.service.findOneById(userPayload.id)
   }
 
-  @Mutation(returns => User, { name: 'userCreate' })
-  async createOne(@Args('user') user: UserCreateInput): Promise<User> {
+  @Mutation(returns => UserQuery, { name: 'userCreate' })
+  async createOne(@Args('user') user: UserCreateInput): Promise<UserQuery> {
     return this.service.createOne(user)
   }
 
-  @Mutation(returns => User, { name: 'userUpdate' })
-  async updateOne(@Args('user') user: UserUpdateInput): Promise<User> {
+  @Mutation(returns => UserQuery, { name: 'userUpdate' })
+  async updateOne(@Args('user') user: UserUpdateInput): Promise<UserQuery> {
     return this.service.updateOne(user)
   }
 
-  @Mutation(returns => User, { name: 'userChangePassword' })
+  @Mutation(returns => UserQuery, { name: 'userChangePassword' })
   @UseGuards(GqlAuthGuard)
   async changePassword(
     @Args('passwords') passwords: UserChangePasswordInput,
     @CurrentUser() userPayload: JwtUserPayload
-  ): Promise<User> {
+  ): Promise<UserQuery> {
     return this.service.changePassword({ userId: userPayload.id, ...passwords })
   }
 
-  @Mutation(returns => Boolean, { name: 'removeUser' })
+  @Mutation(returns => Boolean, { name: 'userRemove' })
   async removeOne(@Args('id') id: string): Promise<boolean> {
     return this.service.removeOne(id)
+  }
+
+  @Query(returns => UserEmailStatusQuery, { name: 'userGetEmailStatus' })
+  getEmailStatus(@Args('email') emailAddress: string): Promise<UserEmailStatusQuery> {
+    return this.service.getEmailStatus(emailAddress)
   }
 }

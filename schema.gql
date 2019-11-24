@@ -109,6 +109,17 @@ enum CurrencyType {
   som
 }
 
+"""Email statuses"""
+enum EmailStatus {
+  free
+  exists
+  notConfirmed
+}
+
+type EmailStatusQuery {
+  status: String!
+}
+
 type Image {
   id: ID!
   path: String!
@@ -134,10 +145,10 @@ type Mutation {
   adCategoryCreateOne(adCategory: AdCategoryCreateInput!): AdCategory!
   adCategoryUpdateOne(adCategory: AdCategoryUpdateInput!): AdCategory!
   adCategoryRemoveOne(id: String!): Boolean!
-  userCreate(user: UserCreateInput!): User!
-  userUpdate(user: UserUpdateInput!): User!
-  userChangePassword(passwords: UserChangePasswordInput!): User!
-  removeUser(id: String!): Boolean!
+  userCreate(user: UserCreateInput!): UserQuery!
+  userUpdate(user: UserUpdateInput!): UserQuery!
+  userChangePassword(passwords: UserChangePasswordInput!): UserQuery!
+  userRemove(id: String!): Boolean!
 }
 
 type Query {
@@ -145,22 +156,15 @@ type Query {
   adCategoryFindAll: [AdCategory!]!
   adCategoryFindOneById(id: String!): AdCategory!
   adCategoryFindManyByParentId(id: String!): [AdCategory!]!
-  userFindById(id: String!): User!
-  userMe: User!
+  userFindById(id: String!): UserQuery!
+  userMe: UserQuery!
+  userGetEmailStatus(email: String!): UserEmailStatusQuery!
   loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
   refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
-}
-
-type User {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  emailAddress: String!
-  photo: String
 }
 
 input UserChangePasswordInput {
@@ -173,6 +177,18 @@ input UserCreateInput {
   lastName: String!
   emailAddress: String!
   password: String!
+  photo: String
+}
+
+type UserEmailStatusQuery {
+  status: EmailStatus!
+}
+
+type UserQuery {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emailAddress: String!
   photo: String
 }
 
