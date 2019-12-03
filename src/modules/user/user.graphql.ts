@@ -1,6 +1,7 @@
 import { IsEmail, IsOptional, Length } from 'class-validator'
 import { Field, ID, InputType, ObjectType } from 'type-graphql'
 import { EmailStatus } from '../../consts/email'
+import { AuthJwtTokesQuery } from '../auth/auth.graphql'
 
 @ObjectType()
 export class UserQuery {
@@ -14,10 +15,28 @@ export class UserQuery {
   lastName: string
 
   @Field()
-  emailAddress: string
+  email: string
+
+  @Field()
+  isEmailVerified: boolean
+
+  @Field({ nullable: true })
+  phoneNumber: string
+
+  @Field()
+  isPhoneVerified: boolean
 
   @Field({ nullable: true })
   photo?: string
+}
+
+@ObjectType()
+export class UserCreateResponseQuery {
+  @Field(type => UserQuery)
+  user: UserQuery
+
+  @Field(type => AuthJwtTokesQuery)
+  tokens: AuthJwtTokesQuery
 }
 
 @ObjectType()
@@ -36,7 +55,7 @@ export class UserCreateInput {
 
   @Field()
   @IsEmail()
-  emailAddress: string
+  email: string
 
   @Field()
   @Length(4, 16)
@@ -61,7 +80,7 @@ export class UserUpdateInput {
   @Field({ nullable: true })
   @IsOptional()
   @IsEmail()
-  emailAddress: string
+  email: string
 
   @Field({ nullable: true })
   @IsOptional()

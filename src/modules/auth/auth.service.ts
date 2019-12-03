@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as c from 'config'
 import { HttpExceptionMessage } from '../../consts/http-exception-message'
@@ -13,12 +13,13 @@ import uuid = require('uuid')
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService
   ) {
   }
 
   async loginByCredentials(dto: LoginByCredentialsDto): Promise<AuthJwtTokesDto> {
-    const user = await this.userService.findOneByEmailWithPassword(dto.emailAddress)
+    const user = await this.userService.findOneByEmailWithPassword(dto.email)
     if (!user) {
       throw new UnauthorizedException(HttpExceptionMessage.auth.credentialsAreWrong)
     }
@@ -37,7 +38,7 @@ export class AuthService {
     return this.generateTokensPair(user)
   }
 
-  private generateTokensPair(user: UserResponseDTO) {
+  generateTokensPair(user: UserResponseDTO) {
     const accessToken = this.generateAccessToken(user)
     const refreshToken = this.generateRefreshToken(user.id)
     return {
@@ -65,7 +66,7 @@ export class AuthService {
   private getAccessTokenPayload(user: UserResponseDTO) {
     return {
       id: user.id,
-      email: user.emailAddress,
+      email: user.email
     }
   }
 }

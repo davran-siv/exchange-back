@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { GqlAuthGuard } from '../../common/authGuard'
 import { CurrentUser } from '../../common/currentUser.decorator'
 import { JwtUserPayload } from '../auth/interfaces/jwt.interface'
-import { UserChangePasswordInput, UserCreateInput, UserEmailStatusQuery, UserQuery, UserUpdateInput } from './user.graphql'
+import { UserChangePasswordInput, UserCreateInput, UserCreateResponseQuery, UserEmailStatusQuery, UserQuery, UserUpdateInput } from './user.graphql'
 import { UserService } from './user.service'
 
 @Resolver(of => UserQuery)
@@ -24,8 +24,8 @@ export class UserResolver {
     return this.service.findOneById(userPayload.id)
   }
 
-  @Mutation(returns => UserQuery, { name: 'userCreate' })
-  async createOne(@Args('user') user: UserCreateInput): Promise<UserQuery> {
+  @Mutation(returns => UserCreateResponseQuery, { name: 'userCreate' })
+  async createOne(@Args('user') user: UserCreateInput): Promise<UserCreateResponseQuery> {
     return this.service.createOne(user)
   }
 
@@ -49,7 +49,7 @@ export class UserResolver {
   }
 
   @Query(returns => UserEmailStatusQuery, { name: 'userGetEmailStatus' })
-  getEmailStatus(@Args('email') emailAddress: string): Promise<UserEmailStatusQuery> {
-    return this.service.getEmailStatus(emailAddress)
+  getEmailStatus(@Args('email') email: string): Promise<UserEmailStatusQuery> {
+    return this.service.getEmailStatus(email)
   }
 }

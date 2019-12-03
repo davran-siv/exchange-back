@@ -22,7 +22,7 @@ export class UserEntity {
   isActive: boolean
 
   @Column({ name: 'email_address', type: 'varchar' })
-  emailAddress: string
+  email: string
 
   @Column({ name: 'is_email_verified', default: false })
   isEmailVerified: boolean

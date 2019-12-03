@@ -1,9 +1,9 @@
 import { registerEnumType } from 'type-graphql'
 
 export enum EmailStatus {
-  free = 'FREE',
-  exists = 'EXISTS',
-  notConfirmed = 'NOT_CONFIRMED'
+  FREE = 'FREE',
+  EXISTS = 'EXISTS',
+  NOT_CONFIRMED = 'NOT_CONFIRMED'
 }
 
 registerEnumType(EmailStatus, {

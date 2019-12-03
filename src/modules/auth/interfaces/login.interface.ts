@@ -5,7 +5,7 @@ export class LoginByCredentialsDto {
   @ApiModelProperty()
   @IsString()
   @IsNotEmpty()
-  emailAddress: string
+  email: string
 
   @ApiModelProperty()
   @IsString()
@@ -17,5 +17,10 @@ export class RefreshTokenDto {
   @ApiModelProperty()
   @IsString()
   @IsNotEmpty()
+  refreshToken: string
+}
+
+export interface AuthJwtTokesResponseDTO {
+  accessToken: string
   refreshToken: string
 }

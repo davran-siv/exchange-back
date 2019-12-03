@@ -13,7 +13,7 @@ export class InitUserTable1552545325846 implements MigrationInterface {
         { name: 'is_deleted', type: 'BOOLEAN', default: false },
         { name: 'is_active', type: 'BOOLEAN', default: true },
         { name: 'photo', type: 'TEXT', isNullable: true },
-        { name: 'email_address', type: 'VARCHAR', length: '50', isUnique: true },
+        { name: 'email', type: 'VARCHAR', length: '50', isUnique: true },
         { name: 'is_email_verified', type: 'BOOLEAN', default: false },
         { name: 'phone_number', type: 'VARCHAR', length: '20', isNullable: true },
         { name: 'is_phone_verified', type: 'BOOLEAN', default: false },

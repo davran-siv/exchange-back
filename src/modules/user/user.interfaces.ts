@@ -1,11 +1,12 @@
 import { EmailStatus } from '../../consts/email'
+import { AuthJwtTokesResponseDTO } from '../auth/interfaces/login.interface'
 import { UserEntity } from './user.entity'
 
 export class CreateUserRequestDTO {
   readonly firstName: string
   readonly lastName: string
   readonly password: string
-  readonly emailAddress: string
+  readonly email: string
   readonly photo?: string
 }
 
@@ -13,7 +14,7 @@ export class UpdateUserRequestDTO {
   readonly id: string
   readonly firstName?: string
   readonly lastName?: string
-  readonly emailAddress?: string
+  readonly email?: string
   readonly photo?: string
 }
 
@@ -21,17 +22,21 @@ export class UserResponseDTO {
   readonly id: string
   readonly firstName: string
   readonly lastName: string
-  readonly emailAddress: string
+  readonly email: string
   readonly photo: string | null
   readonly isEmailVerified: boolean
+  readonly phoneNumber: string | null
+  readonly isPhoneVerified: boolean
 
   constructor(model: UserEntity) {
     this.id = model.id
     this.firstName = model.firstName
     this.lastName = model.lastName
-    this.emailAddress = model.emailAddress
+    this.email = model.email
     this.photo = model.photo
     this.isEmailVerified = model.isEmailVerified
+    this.phoneNumber = model.phoneNumber
+    this.isPhoneVerified = model.isPhoneVerified
   }
 
   static of(model: UserEntity): UserResponseDTO
@@ -68,4 +73,9 @@ export class UserChangePasswordDTO {
 
 export interface UserEmailStatusDTO {
   status: EmailStatus
+}
+
+export interface UserCreateOneResponseDTO {
+  user: UserResponseDTO,
+  tokens: AuthJwtTokesResponseDTO
 }

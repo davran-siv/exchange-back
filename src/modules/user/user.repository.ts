@@ -23,15 +23,15 @@ export class UserRepository {
                .getOne()
   }
 
-  findOneByEmail(emailAddress: string): Promise<UserEntity> {
+  findOneByEmail(email: string): Promise<UserEntity> {
     return this.entity.createQueryBuilder('users')
-               .where('users.emailAddress = :emailAddress', { emailAddress })
+               .where('users.email = :email', { email })
                .getOne()
   }
 
-  findOneByEmailWithPassword(emailAddress: string): Promise<UserEntity | undefined> {
+  findOneByEmailWithPassword(email: string): Promise<UserEntity | undefined> {
     return this.entity.createQueryBuilder('users')
-               .where('users.emailAddress = :emailAddress', { emailAddress })
+               .where('users.email = :email', { email })
                .andWhere('users.isDeleted = false')
                .addSelect('users.password')
                .getOne()

@@ -6,7 +6,7 @@ export class LoginByCredentialsInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  emailAddress: string
+  email: string
 
   @Field()
   @IsString()
@@ -23,7 +23,7 @@ export class RefreshTokenInput {
 }
 
 @ObjectType()
-export class AuthJwtTokes {
+export class AuthJwtTokesQuery {
   @Field()
   accessToken: string
 

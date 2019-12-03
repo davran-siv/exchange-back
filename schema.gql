@@ -93,7 +93,7 @@ input AdUpdateOneInput {
   imageIds: [String!]
 }
 
-type AuthJwtTokes {
+type AuthJwtTokesQuery {
   accessToken: String!
   refreshToken: String!
 }
@@ -111,9 +111,9 @@ enum CurrencyType {
 
 """Email statuses"""
 enum EmailStatus {
-  free
-  exists
-  notConfirmed
+  FREE
+  EXISTS
+  NOT_CONFIRMED
 }
 
 type EmailStatusQuery {
@@ -126,7 +126,7 @@ type Image {
 }
 
 input LoginByCredentialsInput {
-  emailAddress: String!
+  email: String!
   password: String!
 }
 
@@ -145,7 +145,7 @@ type Mutation {
   adCategoryCreateOne(adCategory: AdCategoryCreateInput!): AdCategory!
   adCategoryUpdateOne(adCategory: AdCategoryUpdateInput!): AdCategory!
   adCategoryRemoveOne(id: String!): Boolean!
-  userCreate(user: UserCreateInput!): UserQuery!
+  userCreate(user: UserCreateInput!): UserCreateResponseQuery!
   userUpdate(user: UserUpdateInput!): UserQuery!
   userChangePassword(passwords: UserChangePasswordInput!): UserQuery!
   userRemove(id: String!): Boolean!
@@ -159,8 +159,8 @@ type Query {
   userFindById(id: String!): UserQuery!
   userMe: UserQuery!
   userGetEmailStatus(email: String!): UserEmailStatusQuery!
-  loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokes!
-  refreshToken(auth: RefreshTokenInput!): AuthJwtTokes!
+  loginByCredentials(auth: LoginByCredentialsInput!): AuthJwtTokesQuery!
+  refreshToken(auth: RefreshTokenInput!): AuthJwtTokesQuery!
 }
 
 input RefreshTokenInput {
@@ -175,9 +175,14 @@ input UserChangePasswordInput {
 input UserCreateInput {
   firstName: String!
   lastName: String!
-  emailAddress: String!
+  email: String!
   password: String!
   photo: String
+}
+
+type UserCreateResponseQuery {
+  user: UserQuery!
+  tokens: AuthJwtTokesQuery!
 }
 
 type UserEmailStatusQuery {
@@ -188,7 +193,10 @@ type UserQuery {
   id: ID!
   firstName: String!
   lastName: String!
-  emailAddress: String!
+  email: String!
+  isEmailVerified: Boolean!
+  phoneNumber: String
+  isPhoneVerified: Boolean!
   photo: String
 }
 
@@ -196,6 +204,6 @@ input UserUpdateInput {
   id: ID!
   firstName: String
   lastName: String
-  emailAddress: String
+  email: String
   photo: String
 }

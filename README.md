@@ -10,7 +10,7 @@
 ## Preparation
 
 ```bash
-$ docker run --rm --name postgres -p5432:5432 -e POSTGRES_PASSWORD=root -e POSTGRES_DB=exchange -e POSTGRES_USER=root -d postgres:11.5
+$ docker run --name postgres -p5432:5432 -e POSTGRES_PASSWORD=root -e POSTGRES_DB=exchange -e POSTGRES_USER=root -d postgres:11.5
 ```
 ## Installation
 

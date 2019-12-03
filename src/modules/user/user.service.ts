@@ -1,12 +1,14 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { ForbiddenException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { EntityManager, Transaction, TransactionManager } from 'typeorm'
 import { HttpExceptionMessage } from '../../consts'
 import { EmailStatus } from '../../consts/email'
 import { hashPassword, validatePassword } from '../../utils/password.util'
+import { AuthService } from '../auth/auth.service'
 import {
   CreateUserRequestDTO,
   UpdateUserRequestDTO,
   UserChangePasswordDTO,
+  UserCreateOneResponseDTO,
   UserEmailStatusDTO,
   UserResponseDTO,
   UserResponseWithPasswordDto
@@ -16,12 +18,14 @@ import { UserRepository } from './user.repository'
 @Injectable()
 export class UserService {
   constructor(
-    private readonly repository: UserRepository
+    private readonly repository: UserRepository,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService
   ) {
   }
 
-  private async throwExceptionIfEmailInUse(emailAddress: string): Promise<void> {
-    const foundUserByEmail = await this.repository.findOneByEmail(emailAddress)
+  private async throwExceptionIfEmailInUse(email: string): Promise<void> {
+    const foundUserByEmail = await this.repository.findOneByEmail(email)
     if (foundUserByEmail) {
       throw new ForbiddenException(HttpExceptionMessage.user.emailAlreadyInUse)
     }
@@ -37,21 +41,25 @@ export class UserService {
 
   @Transaction()
   async createOne(dto: CreateUserRequestDTO,
-                  @TransactionManager() entityManager?: EntityManager): Promise<UserResponseDTO> {
+                  @TransactionManager() entityManager?: EntityManager): Promise<UserCreateOneResponseDTO> {
     const { password, ...user } = dto
-    await this.throwExceptionIfEmailInUse(dto.emailAddress)
+    await this.throwExceptionIfEmailInUse(dto.email)
 
     const hashedPassword = await hashPassword(password)
     const newUser = await this.repository.createOrUpdateOne({
       password: hashedPassword,
       ...user
     }, entityManager)
-    return UserResponseDTO.of(newUser)
+
+    return {
+      user: UserResponseDTO.of(newUser),
+      tokens: this.authService.generateTokensPair(newUser)
+    }
   }
 
   async updateOne(dto: UpdateUserRequestDTO): Promise<UserResponseDTO> {
-    if (dto.emailAddress) {
-      await this.throwExceptionIfEmailInUse(dto.emailAddress)
+    if (dto.email) {
+      await this.throwExceptionIfEmailInUse(dto.email)
     }
 
     await this.repository.createOrUpdateOne(dto)
@@ -68,13 +76,13 @@ export class UserService {
     }
   }
 
-  async findOneByEmailWithPassword(emailAddress: string): Promise<UserResponseWithPasswordDto | undefined> {
-    const user = await this.repository.findOneByEmailWithPassword(emailAddress)
+  async findOneByEmailWithPassword(email: string): Promise<UserResponseWithPasswordDto | undefined> {
+    const user = await this.repository.findOneByEmailWithPassword(email)
     return user ? UserResponseWithPasswordDto.of(user) : user
   }
 
-  async findOneByEmail(emailAddress: string): Promise<UserResponseWithPasswordDto | undefined> {
-    const user = await this.repository.findOneByEmail(emailAddress)
+  async findOneByEmail(email: string): Promise<UserResponseWithPasswordDto | undefined> {
+    const user = await this.repository.findOneByEmail(email)
     return user ? UserResponseWithPasswordDto.of(user) : user
   }
 
@@ -99,20 +107,20 @@ export class UserService {
     return user
   }
 
-  async getEmailStatus(emailAddress: string): Promise<UserEmailStatusDTO> {
-    const user = await this.findOneByEmail(emailAddress)
+  async getEmailStatus(email: string): Promise<UserEmailStatusDTO> {
+    const user = await this.findOneByEmail(email)
     if (!user) {
       return {
-        status: EmailStatus.free
+        status: EmailStatus.FREE
       }
     }
     if (!user.isEmailVerified) {
       return {
-        status: EmailStatus.notConfirmed
+        status: EmailStatus.NOT_CONFIRMED
       }
     }
     return {
-      status: EmailStatus.exists
+      status: EmailStatus.EXISTS
     }
   }
 
