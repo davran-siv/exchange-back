@@ -14,7 +14,7 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' })
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secretOrPrivateKey: c.get('jwtToken.secretKey')
+      secret: c.get('jwtToken.secretKey')
     }),
     UserModule
   ],

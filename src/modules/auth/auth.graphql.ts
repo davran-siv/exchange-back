@@ -1,8 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 import { Field, InputType, ObjectType } from 'type-graphql'
+import { UserQuery } from '../user/user.graphql'
 
 @InputType()
-export class LoginByCredentialsInput {
+export class AuthLoginByCredentialsQuery {
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -15,7 +16,7 @@ export class LoginByCredentialsInput {
 }
 
 @InputType()
-export class RefreshTokenInput {
+export class AuthRefreshTokenInput {
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -29,4 +30,13 @@ export class AuthJwtTokesQuery {
 
   @Field()
   refreshToken: string
+}
+
+@ObjectType()
+export class AuthLoginByCredentialsResponseQuery {
+  @Field(type => UserQuery)
+  user: UserQuery
+
+  @Field(type => AuthJwtTokesQuery)
+  tokens: AuthJwtTokesQuery
 }

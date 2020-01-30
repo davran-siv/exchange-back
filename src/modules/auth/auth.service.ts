@@ -6,7 +6,7 @@ import { validatePassword } from '../../utils/password.util'
 import { UserResponseDTO } from '../user/user.interfaces'
 import { UserService } from '../user/user.service'
 import { AuthJwtTokesDto, JwtRefreshTokenPayloadDto } from './interfaces/jwt.interface'
-import { LoginByCredentialsDto, RefreshTokenDto } from './interfaces/login.interface'
+import { AuthLoginByCredentialsResponseDTO, LoginByCredentialsDto, RefreshTokenDto } from './interfaces/login.interface'
 import uuid = require('uuid')
 
 @Injectable()
@@ -18,7 +18,7 @@ export class AuthService {
   ) {
   }
 
-  async loginByCredentials(dto: LoginByCredentialsDto): Promise<AuthJwtTokesDto> {
+  async loginByCredentials(dto: LoginByCredentialsDto): Promise<AuthLoginByCredentialsResponseDTO> {
     const user = await this.userService.findOneByEmailWithPassword(dto.email)
     if (!user) {
       throw new UnauthorizedException(HttpExceptionMessage.auth.credentialsAreWrong)
@@ -26,7 +26,11 @@ export class AuthService {
     if (!await validatePassword(dto.password, user.password)) {
       throw new UnauthorizedException(HttpExceptionMessage.auth.credentialsAreWrong)
     }
-    return this.generateTokensPair(user)
+    const tokens = await this.generateTokensPair(user)
+    return {
+      user,
+      tokens
+    }
   }
 
   async refreshToken(dto: RefreshTokenDto): Promise<AuthJwtTokesDto> {

@@ -1,5 +1,5 @@
 import { Args, Query, Resolver } from '@nestjs/graphql'
-import { AuthJwtTokesQuery, LoginByCredentialsInput, RefreshTokenInput } from './auth.graphql'
+import { AuthJwtTokesQuery, AuthLoginByCredentialsQuery, AuthLoginByCredentialsResponseQuery, AuthRefreshTokenInput } from './auth.graphql'
 import { AuthService } from './auth.service'
 
 @Resolver(of => AuthJwtTokesQuery)
@@ -7,13 +7,13 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {
   }
 
-  @Query(returns => AuthJwtTokesQuery, { name: 'loginByCredentials' })
-  async loginByCredentials(@Args('auth') auth: LoginByCredentialsInput): Promise<AuthJwtTokesQuery> {
+  @Query(returns => AuthLoginByCredentialsResponseQuery, { name: 'authLoginByCredentials' })
+  async loginByCredentials(@Args('auth') auth: AuthLoginByCredentialsQuery): Promise<AuthLoginByCredentialsResponseQuery> {
     return this.authService.loginByCredentials(auth)
   }
 
-  @Query(returns => AuthJwtTokesQuery, { name: 'refreshToken' })
-  async refreshToken(@Args('auth') auth: RefreshTokenInput): Promise<AuthJwtTokesQuery> {
+  @Query(returns => AuthJwtTokesQuery, { name: 'authRefreshToken' })
+  async refreshToken(@Args('auth') auth: AuthRefreshTokenInput): Promise<AuthJwtTokesQuery> {
     return this.authService.refreshToken(auth)
   }
 }
